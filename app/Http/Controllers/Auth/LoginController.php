@@ -46,15 +46,19 @@ class LoginController extends Controller
     {
         $manager = app(ManagerTenant::class);
         $cliente = Cliente::where('bd_database', $request->id)->First();
-
+        // verifica se existe Cliente
+        if (!$cliente) {
+            return redirect()->back()->with('flash_message', 'Cliente não encontrado');
+        }
+        // muda o banco de dados
         $manager->setConnection($cliente);
         $manager->setFileSystems($cliente);
+        // faz autenticação
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             return redirect()->route('home');
+        } else {
+            return redirect()->back()->with('flash_message', 'e-mail ou senha invalido!');
         }
-        //dd($cliente);
-        //dd('ok');
-
     }
 }

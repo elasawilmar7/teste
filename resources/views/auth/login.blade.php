@@ -10,6 +10,15 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
+                        @if ( Session::has('flash_message') )
+                        <div class="alert {{ Session::has('flash_type') ? Session::get('flash_type') : 'alert-success'}}">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p>{!! Session::get('flash_message') !!}</p>
+                        </div>
+
+                        @endif
                         <div class="form-group row has-feedback {{ $errors->has('id') ? 'has-error' : '' }}">
                             <label for="email" class="col-md-4 col-form-label text-md-right">ID</label>
                             <div class="col-md-6">
