@@ -56,6 +56,7 @@ class LoginController extends Controller
         // faz autenticação
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            session()->put('tenant', $cliente);
             return redirect()->route('home');
         } else {
             return redirect()->back()->with('flash_message', 'e-mail ou senha invalido!');
