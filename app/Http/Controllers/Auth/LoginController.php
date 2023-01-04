@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Tenant\ManagerTenant;
 use LogisticsGame\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -57,6 +58,8 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             session()->put('tenant', $cliente);
+            $ses = session()->all();
+            Log::info($ses);
             return redirect()->route('home');
         } else {
             return redirect()->back()->with('flash_message', 'e-mail ou senha invalido!');

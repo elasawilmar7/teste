@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Tenant;
 
 use Closure;
+use Illuminate\Support\Facades\Log;
 
 class TenantMiddleware
 {
@@ -16,6 +17,11 @@ class TenantMiddleware
     public function handle($request, Closure $next)
     {
         //dd('Aqui');
+        //$url = $request->getHost();
+        $url = $request->url();
+        $ses = session()->all();
+        Log::info($ses);
+
         if (session()->has('tenant')) {
             dd('deu certo');
         }
