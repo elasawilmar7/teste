@@ -4,6 +4,8 @@ namespace App\Http\Middleware\Tenant;
 
 use Closure;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 class TenantMiddleware
 {
@@ -16,15 +18,14 @@ class TenantMiddleware
      */
     public function handle($request, Closure $next)
     {
-        //dd('Aqui');
-        //$url = $request->getHost();
-        $url = $request->url();
-        $ses = session()->all();
-        Log::info($ses);
 
-        if (session()->has('tenant')) {
-            dd('deu certo');
+        $currentRouteName = $request->path();
+        Log::info($currentRouteName);
+
+        if (!session()->has('tenant') && $currentRouteName != 'login') {
+            return redirect()->route('login');
         }
+
         return $next($request);
     }
 }
