@@ -20,29 +20,23 @@ class TenantMiddleware
     {
 
         $currentRouteName = $request->path();
-        //Log::info($currentRouteName);
-        //session()->flush();
-        $cart = session()->get('tenant');
 
         /* if (!session()->has('tenant')) {
-            Log::info('passei aqui primeiroBBB');
-        } */
-        Log::info($cart);
-        if (is_null($cart)) {
-            Log::info('nulo');
+            Log::info('sessao NÃO existe');
         }
 
-        //if (!session()->has('tenant') && $currentRouteName != 'login') {
-        if ($cart == null && $currentRouteName != 'login') {
-            //dd('oko');
-            //Log::info('passei aqui');
+        if (session()->has('tenant')) {
+            Log::info('sessao foi criada');
+        } */
+        //session()->flush();
+
+
+        if (!session()->has('tenant') && $currentRouteName != 'login') {
+            Log::info('foi para o login');
             return redirect()->route('login');
         }
 
 
-        //Log::info($cart);
-
-        // dd($request);
         return $next($request);
     }
 }
