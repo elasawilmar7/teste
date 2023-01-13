@@ -21,13 +21,13 @@ class TenantMiddleware
 
         $currentRouteName = $request->path();
 
-        /* if (!session()->has('tenant')) {
+        if (!session()->has('tenant')) {
             Log::info('sessao NÃO existe');
         }
 
         if (session()->has('tenant')) {
             Log::info('sessao foi criada');
-        } */
+        }
         //session()->flush();
 
 
