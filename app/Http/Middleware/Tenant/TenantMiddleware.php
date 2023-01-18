@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Tenant\ManagerTenant;
 
 class TenantMiddleware
 {
@@ -21,13 +23,29 @@ class TenantMiddleware
 
         $currentRouteName = $request->path();
 
-        if (!session()->has('tenant')) {
+        /* if (!session()->has('tenant')) {
             Log::info('sessao NÃO existe');
         }
 
         if (session()->has('tenant')) {
             Log::info('sessao foi criada');
+        } */
+
+        /* if (Auth::check()) {
+            Log::info('Logado');
+        } else {
+            Log::info('Não Logado'); */
+        if (session()->has('tenant')) {
+            $manager = app(ManagerTenant::class);
+            $cliente = session()->get('tenant');
+            //dd($cliente);
+            Log::info('re conectar');
+            $manager->setConnection($cliente);
+            $manager->setFileSystems($cliente);
+            return $next($request);
+            //return redirect()->route('home');
         }
+        //}
         //session()->flush();
 
 
