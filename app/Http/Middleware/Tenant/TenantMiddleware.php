@@ -23,36 +23,24 @@ class TenantMiddleware
 
         $currentRouteName = $request->path();
 
-        /* if (!session()->has('tenant')) {
-            Log::info('sessao NÃO existe');
-        }
-
-        if (session()->has('tenant')) {
-            Log::info('sessao foi criada');
-        } */
-
-        /* if (Auth::check()) {
-            Log::info('Logado');
-        } else {
-            Log::info('Não Logado'); */
-        if (session()->has('tenant')) {
+        if (session()->has('tenant') && $currentRouteName == 'login') {
             $manager = app(ManagerTenant::class);
             $cliente = session()->get('tenant');
-            //dd($cliente);
-            Log::info('re conectar');
+
+            Log::info('re conectar ' . $currentRouteName);
             $manager->setConnection($cliente);
             $manager->setFileSystems($cliente);
+
             return $next($request);
-            //return redirect()->route('home');
         }
-        //}
         //session()->flush();
+        // dump($request->url());
+        // dd($currentRouteName);
 
-
-        if (!session()->has('tenant') && $currentRouteName != 'login') {
+        /* if (!session()->has('tenant') && $currentRouteName != 'login') {
             Log::info('foi para o login');
             return redirect()->route('login');
-        }
+        } */
 
 
         return $next($request);

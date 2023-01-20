@@ -53,7 +53,7 @@ class LoginController extends Controller
         }
         // muda o banco de dados
         $manager->setConnection($cliente);
-        $manager->setFileSystems($cliente);
+        // $manager->setFileSystems($cliente);
         // faz autenticação
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
